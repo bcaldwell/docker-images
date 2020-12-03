@@ -2,6 +2,7 @@
 
 import yaml
 import os
+import sys
 
 def main():
     images_file = "./images.yaml"
@@ -36,7 +37,9 @@ def build_image(image):
         print("no changes in", image["name"], image["path"])
         return
 
-    os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"{}, _sha, latest\"".format(image["name"], image["path"], image["version"]))
+    exit = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"{}, _sha, latest\"".format(image["name"], image["path"], image["version"]))
+    if exit != 0:
+      sys.exit(exit)
     print()
 
 def os_run(cmd):

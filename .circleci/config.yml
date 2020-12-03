@@ -8,6 +8,7 @@ jobs:
     # Run the welcome/run job in its own container
     steps:
       - checkout
+      - setup_remote_docker
 
       - run: apk add python3 py3-yaml
       - run: python3 .circleci/build_images.py
