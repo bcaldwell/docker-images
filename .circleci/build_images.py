@@ -32,7 +32,7 @@ def main():
 
 def build_image(image):
     changed = os_run("ci-scripts git/files_changed --git.files_changed.prefix {}".format(image["path"]))
-    if not changed:
+    if changed != 0:
         print("no changes in", image["name"], image["path"])
         return
 

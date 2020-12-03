@@ -1,3 +1,4 @@
 benjamincaldwell/postgres_s3_backup:
   path: postgres_s3_backup
   version: 0.0.1
+test: test
