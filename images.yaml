@@ -1,3 +1,3 @@
-benjamincaldwell/postgres_s3_backup:
-  path: postgres_s3_backup
+benjamincaldwell/postgres-s3-backup:
+  path: postgres-s3-backup
   version: 0.0.1
