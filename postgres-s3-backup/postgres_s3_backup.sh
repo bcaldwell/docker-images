@@ -17,3 +17,6 @@ if [[ ! -z "${S3_ENDPOINT_URL}" ]]; then
 fi
 
 aws s3 cp ${AWS_ARGS} ${DUMP_FILE}.bz2.gpg $S3_BACKUP_PATH
+
+# gpg --output selfops-dump-civo-nyc-1.pgdump.bz2 --decrypt selfops-dump-civo-nyc-1.pgdump.bz2.gpg
+# bzip2 -d selfops-dump-civo-nyc-1.pgdump.bz2
