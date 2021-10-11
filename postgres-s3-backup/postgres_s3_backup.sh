@@ -18,6 +18,7 @@ fi
 
 aws s3 cp ${AWS_ARGS} ${DUMP_FILE}.bz2.gpg $S3_BACKUP_PATH
 
+# restore commands
 # gpg --output <name>.pgdump.bz2 --decrypt <name>.pgdump.bz2.gpg
 # bzip2 -d <name>.pgdump.bz2
 # psql -h localhost -p 5432 -d $POSTGRES_DB -U $POSTGRES_USER -f <name>.pgdump
