@@ -1,4 +1,4 @@
-FROM postgres:11.8-alpine as postgres
+FROM postgres:14.0-alpine as postgres
 
 RUN apk add gnupg aws-cli bzip2
 
