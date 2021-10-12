@@ -1,3 +1,7 @@
 benjamincaldwell/postgres-s3-backup:
   path: postgres-s3-backup
   version: 0.0.1
+
+benjamincaldwell/git:
+  path: git
+  version: 0.0.1
