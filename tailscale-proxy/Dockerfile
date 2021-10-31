@@ -14,7 +14,9 @@ COPY --from=tailscale /app/tailscaled /bin/tailscaled
 COPY --from=tailscale /app/tailscale /bin/tailscale
 RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale
 
+COPY files/nginx/nginx.conf /etc/nginx
 COPY files/nginx/ /etc/nginx/templates/
+COPY files/nginx/tcpconf.d /etc/nginx/templates-tcpconf.d/
 COPY files/startup-scripts/ /docker-entrypoint.d/
 
 RUN chmod +x /docker-entrypoint.d/*
