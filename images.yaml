@@ -5,3 +5,7 @@ benjamincaldwell/postgres-s3-backup:
 benjamincaldwell/git:
   path: git
   version: 0.0.1
+
+benjamincaldwell/tailscale-proxy:
+  path: tailscale-proxy
+  version: 0.0.1
