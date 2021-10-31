@@ -1,5 +1,6 @@
 #!/bin/sh
 
+mkdir -p /etc/nginx/tcpconf.d/
 for i in `find /etc/nginx/templates-tcpconf.d/ -type f -iname "*.tpl"`; do
   file=$(basename $i)
   echo "Templating $i"
