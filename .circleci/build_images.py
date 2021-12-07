@@ -4,6 +4,7 @@ import yaml
 import os
 import sys
 
+
 def main():
     images_file = "./images.yaml"
 
@@ -18,7 +19,7 @@ def main():
             "name": k
         }
 
-        if isinstance(v,dict):
+        if isinstance(v, dict):
             if "path" not in v:
                 print("not path property found for image ", k)
             image["path"] = v["path"]
@@ -31,19 +32,24 @@ def main():
 
         build_image(image)
 
+
 def build_image(image):
-    changed = os_run("ci-scripts git/files_changed --git.files_changed.prefix {}".format(image["path"]))
+    changed = os_run(
+        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(image["path"]))
     if changed != 0:
         print("no changes in", image["name"], image["path"])
         return
 
-    e = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"{}, _sha, latest\"".format(image["name"], image["path"], image["version"]))
+    e = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"{}, _sha, latest\"".format(
+        image["name"], image["path"], image["version"]))
     if e != 0:
-      exit(1)
+        exit(1)
     print()
+
 
 def os_run(cmd):
     print(cmd)
     return os.system(cmd)
+
 
 main()

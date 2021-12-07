@@ -9,3 +9,7 @@ benjamincaldwell/git:
 benjamincaldwell/tailscale-proxy:
   path: tailscale-proxy
   version: 0.0.2
+
+benjamincaldwell/hue-exporter:
+  path: hue-exporter
+  version: b3fb13b5f9397c3500ce9df8889207561e52126f
