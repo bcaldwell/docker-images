@@ -1,12 +1,12 @@
 FROM alpine:latest as tailscale
 WORKDIR /app
 COPY . ./
-ENV TSFILE=tailscale_1.16.2_amd64.tgz
+ENV TSFILE=tailscale_1.32.2_amd64.tgz
 RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && tar xzf ${TSFILE} --strip-components=1
 COPY . ./
 
 
-FROM nginx:1.21-alpine
+FROM nginx:1.23-alpine
 RUN apk update && apk add ca-certificates iptables ip6tables && rm -rf /var/cache/apk/*
 COPY --from=hairyhenderson/gomplate:slim /gomplate /bin/gomplate
 
