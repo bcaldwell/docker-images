@@ -13,3 +13,7 @@ benjamincaldwell/tailscale-proxy:
 benjamincaldwell/hue-exporter:
   path: hue-exporter
   version: upstream-b3fb13b5f9397c3500ce9df8889207561e52126f
+
+benjamincaldwell/kube-postgress-bootstrap:
+  path: kube-postgress-bootstrap
+  version: 0.0.1
