@@ -42,7 +42,7 @@ def main():
             print("invalid run_type")
 
 
-def build_image(image):
+def combine_image(image):
     changed = any_changed(image["path"])
     if not changed:
         print("no changes in", image["name"], image["path"])
