@@ -2,20 +2,32 @@
 version: 2.1
 
 jobs:
-  build_images:
+  build_images_amd:
     docker:
       - image: benjamincaldwell/ci-scripts
-    # Run the welcome/run job in its own container
     steps:
       - checkout
       - setup_remote_docker
 
       - run: apk add python3 py3-yaml
-      - run: python3 .circleci/build_images.py
+      - run: python3 .circleci/build_images.py amd64
+
+  build_images_arm:
+    resource_class: arm.medium
+    docker:
+      - image: benjamincaldwell/ci-scripts
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run: apk add python3 py3-yaml
+      - run: python3 .circleci/build_images.py arm64
 
 workflows:
   version: 2
   build_images:
     jobs:
-      - build_images:
+      - build_images_amd:
+          context: docker
+        build_images_arm:
           context: docker
