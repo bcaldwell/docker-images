@@ -84,7 +84,7 @@ def sha():
         print("unable to detect sha")
         exit(1)
 
-    return sha
+    return sha.strip()
 
 def os_run(cmd):
     print(cmd)
