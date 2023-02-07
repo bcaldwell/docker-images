@@ -77,7 +77,7 @@ def any_changed(path):
 
     return changed
 
-def sha()
+def sha():
     sha = subprocess.run(["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     if sha == "":
