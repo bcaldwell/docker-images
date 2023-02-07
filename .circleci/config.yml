@@ -28,6 +28,8 @@ workflows:
               resource_class: ["medium", "arm.medium"]
             # we only want 2 runs not 4, so exclude the wrong ones
             exclude:
-              arm64: "medium"
-              amd64: "arm.medium"
+            - arch: arm64
+              resource_class: medium
+            - arch: amd64
+              resource_class: "arm.medium"
           context: docker
