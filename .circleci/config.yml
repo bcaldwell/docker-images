@@ -17,8 +17,6 @@ jobs:
     resource_class: arm.medium
     steps:
       - checkout
-      - setup_remote_docker
-
       - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_arm64 ci-scripts
       - run: chmod +x ci-scripts && mv ci-scripts /usr/local/bin
       - run: python3 .circleci/build_images.py arm64
