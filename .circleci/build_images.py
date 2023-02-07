@@ -51,7 +51,7 @@ def combine_image(image):
     commit_sha = sha()
 
     e = os_run("ci-scripts docker/combine_and_push_image --docker.images.dockerRepo {} --docker.tags \"{}, _sha, latest\" --docker.combine.amend_tags \"{}-arm64,{}-amd64\"".format(
-        image["name"], image["path"], image["version"], commit_sha, commit_sha))
+        image["name"], image["version"], commit_sha, commit_sha))
     if e != 0:
         exit(1)
 
