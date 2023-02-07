@@ -1,59 +1,34 @@
-# .circleci/config.yml
 version: 2.1
 
 jobs:
-  build-medium:
-    machine:
-      image: ubuntu-2004:202101-01
-    resource_class: arm.medium
+  build_images_amd:
+    docker:
+      - image: benjamincaldwell/ci-scripts
     steps:
-      - run: uname -a
-      - run: echo "Hello, Arm!"
+      - checkout
+      - setup_remote_docker
 
-  build-large:
+      - run: apk add python3 py3-yaml
+      - run: python3 .circleci/build_images.py amd64
+
+  build_images_arm:
     machine:
-      image: ubuntu-2004:202101-01
-    resource_class: arm.large
+      image: ubuntu-2004:current
+    resource_class: arm.medium
+    docker:
+      - image: benjamincaldwell/ci-scripts
     steps:
-      - run: uname -a
-      - run: echo "Hello, Arm!"
+      - checkout
+      - setup_remote_docker
+
+      - run: apk add python3 py3-yaml
+      - run: python3 .circleci/build_images.py arm64
 
 workflows:
-  build:
+  version: 2
+  build_images:
     jobs:
-      - build-medium
-      - build-large
-
-# # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
-# version: 2.1
-
-# jobs:
-#   build_images_amd:
-#     docker:
-#       - image: benjamincaldwell/ci-scripts
-#     steps:
-#       - checkout
-#       - setup_remote_docker
-
-#       - run: apk add python3 py3-yaml
-#       - run: python3 .circleci/build_images.py amd64
-
-#   build_images_arm:
-#     resource_class: arm.medium
-#     docker:
-#       - image: benjamincaldwell/ci-scripts
-#     steps:
-#       - checkout
-#       - setup_remote_docker
-
-#       - run: apk add python3 py3-yaml
-#       - run: python3 .circleci/build_images.py arm64
-
-# workflows:
-#   version: 2
-#   build_images:
-#     jobs:
-#       - build_images_amd:
-#           context: docker
-#       - build_images_arm:
-#           context: docker
+      - build_images_amd:
+          context: docker
+      - build_images_arm:
+          context: docker
