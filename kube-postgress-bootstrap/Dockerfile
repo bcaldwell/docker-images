@@ -12,5 +12,4 @@ RUN cargo build --release
 
 FROM alpine:3.17
 COPY --from=builder /kube-postgress-bootstrap/target/release/kube-postgress-bootstrap /kube-postgress-bootstrap
-CMD ["/kube-postgress-bootstrap"]
-
+CMD ["/kube-postgress-bootstraps"]

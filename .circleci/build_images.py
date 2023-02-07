@@ -3,6 +3,7 @@
 import yaml
 import os
 import sys
+import subprocess
 
 
 def main():
@@ -41,9 +42,14 @@ def build_image(image):
         return
     
     arch = sys.argv[1]
+    sha = subprocess.run(["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    
+    if sha == "":
+        print("unable to detect sha")
+        exit(1)
 
-    e = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"_sha-{}\" --docker.image.platform \"linux/{}\"".format(
-        image["name"], image["path"], arch, arch))
+    e = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"{}-{}\" --docker.image.platform \"linux/{}\"".format(
+        image["name"], image["path"], sha, arch, arch))
     if e != 0:
         exit(1)
     print()
