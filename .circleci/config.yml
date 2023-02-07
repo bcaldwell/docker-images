@@ -29,5 +29,5 @@ workflows:
     jobs:
       - build_images_amd:
           context: docker
-        build_images_arm:
+      - build_images_arm:
           context: docker
