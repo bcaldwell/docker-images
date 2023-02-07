@@ -44,7 +44,8 @@ def main():
 
 def build_image(image):
     changed = any_changed(image["path"])
-    if changed != 0:
+    if not changed:
+        print("no changes in", image["name"], image["path"])
         return
 
     commit_sha = sha()
@@ -58,7 +59,8 @@ def build_image(image):
 
 def build_image(image):
     changed = any_changed(image["path"])
-    if changed != 0:
+    if not changed:
+        print("no changes in", image["name"], image["path"])
         return
     
     arch = sys.argv[2]
@@ -71,11 +73,9 @@ def build_image(image):
 
 def any_changed(path):
     changed = os_run(
-        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(path))
-    if changed != 0:
-        print("no changes in", image["name"], image["path"])
+        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(path))       
 
-    return changed
+    return changed == 0
 
 def sha():
     sha = subprocess.run(["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode('utf-8')
