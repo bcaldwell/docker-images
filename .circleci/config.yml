@@ -43,5 +43,6 @@ workflows:
               resource_class: "arm.medium"
           context: docker
       - combine_images:
+          context: docker
           requires:
             - build_images
