@@ -5,6 +5,8 @@ jobs:
     parameters:
       arch:
         type: string
+    machine:
+      image: ubuntu-2004:202101-04
     resource_class: << parameters.arch >>.medium
     steps:
       - checkout
