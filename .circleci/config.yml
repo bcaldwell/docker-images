@@ -42,3 +42,6 @@ workflows:
             - arch: amd64
               resource_class: "arm.medium"
           context: docker
+      - combine_images:
+          requires:
+            - build_images
