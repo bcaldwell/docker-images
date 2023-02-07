@@ -3,17 +3,19 @@ version: 2.1
 jobs:
   build_images:
     parameters:
+      resource_class:
+        type: string
       arch:
         type: string
     machine:
       image: ubuntu-2004:current
-    resource_class: << parameters.arch >>.medium
+    resource_class: << parameters.resource_class >>
     steps:
       - checkout
-      - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_<< parameters.arch >>64 > ci-scripts
+      - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_<< parameters.arch >> > ci-scripts
       - run: sudo chmod +x ci-scripts && sudo mv ci-scripts /usr/local/bin/
       - run: pip install pyyaml
-      - run: python3 .circleci/build_images.py << parameters.arch >>64
+      - run: python3 .circleci/build_images.py << parameters.arch >>
 
 workflows:
   version: 2
@@ -22,5 +24,10 @@ workflows:
       - build_images:
           matrix:
             parameters:
-              arch: ["arm", "amd"]
+              arch: ["arm64", "amd64"]
+              resource_class: ["medium", "arm.medium"]
+            # we only want 2 runs not 4, so exclude the wrong ones
+            exclude:
+              arm64: "medium"
+              amd64: "arm.medium"
           context: docker
