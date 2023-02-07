@@ -69,9 +69,9 @@ def build_image(image):
         exit(1)
     print()
 
-def any_changed():
+def any_changed(path):
     changed = os_run(
-        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(image["path"]))
+        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(path))
     if changed != 0:
         print("no changes in", image["name"], image["path"])
 
