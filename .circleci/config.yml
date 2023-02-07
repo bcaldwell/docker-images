@@ -1,33 +1,26 @@
 version: 2.1
 
 jobs:
-  build_images_amd:
+  build_images:
+    parameters:
+      arch:
+        type: string
     machine:
       image: ubuntu-2004:current
-    resource_class: amd.medium
+    resource_class: << parameters.arch >>.medium
     steps:
       - checkout
-      - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_amd64 > ci-scripts
+      - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_<< parameters.arch >>64 > ci-scripts
       - run: sudo chmod +x ci-scripts && sudo mv ci-scripts /usr/local/bin/
       - run: pip install pyyaml
-      - run: python3 .circleci/build_images.py amd64
-
-  build_images_arm:
-    machine:
-      image: ubuntu-2004:current
-    resource_class: arm.medium
-    steps:
-      - checkout
-      - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_arm64 > ci-scripts
-      - run: sudo chmod +x ci-scripts && sudo mv ci-scripts /usr/local/bin/
-      - run: pip install pyyaml
-      - run: python3 .circleci/build_images.py arm64
+      - run: python3 .circleci/build_images.py << parameters.arch >>64
 
 workflows:
   version: 2
   build_images:
     jobs:
-      - build_images_amd:
-          context: docker
-      - build_images_arm:
+      - build_images:
+          matrix:
+            parameters:
+              arch: ["arm", "amd"]
           context: docker
