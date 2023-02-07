@@ -12,7 +12,7 @@ jobs:
     resource_class: << parameters.resource_class >>
     steps:
       - checkout
-      - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_<< parameters.arch >> > ci-scripts
+      - run: wget https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_<< parameters.arch >> -O ci-scripts
       - run: sudo chmod +x ci-scripts && sudo mv ci-scripts /usr/local/bin/
       - run: pip3 install pyyaml
       - run: python3 .circleci/build_images.py << parameters.arch >>
