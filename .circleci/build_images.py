@@ -39,9 +39,11 @@ def build_image(image):
     if changed != 0:
         print("no changes in", image["name"], image["path"])
         return
+    
+    arch = sys.argv[1]
 
-    e = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"{}, _sha, latest\"".format(
-        image["name"], image["path"], image["version"]))
+    e = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"_sha-{}\" --docker.image.platform \"linux/{}\"".format(
+        image["name"], image["path"], arch, arch))
     if e != 0:
         exit(1)
     print()
