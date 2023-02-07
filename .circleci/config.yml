@@ -13,22 +13,15 @@ jobs:
 
   build_images_arm:
     machine:
-      image: ubuntu-2004:202101-01
+      image: ubuntu-2004:current
     resource_class: arm.medium
     steps:
-      - run: uname -a
-      - run: echo "Hello, Arm!"
-#     machine:
-#       image: ubuntu-2004:current
-#     resource_class: arm.medium
-#     docker:
-#       - image: benjamincaldwell/ci-scripts
-#     steps:
-#       - checkout
-#       - setup_remote_docker
+      - checkout
+      - setup_remote_docker
 
-#       - run: apk add python3 py3-yaml
-#       - run: python3 .circleci/build_images.py arm64
+      - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_arm64 ci-scripts
+      - run: chmod +x ci-scripts && mv ci-scripts /usr/local/bin
+      - run: python3 .circleci/build_images.py arm64
 
 workflows:
   version: 2
