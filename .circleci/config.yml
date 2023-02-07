@@ -14,7 +14,7 @@ jobs:
       - checkout
       - run: curl https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_<< parameters.arch >> > ci-scripts
       - run: sudo chmod +x ci-scripts && sudo mv ci-scripts /usr/local/bin/
-      - run: pip install pyyaml
+      - run: pip3 install pyyaml
       - run: python3 .circleci/build_images.py << parameters.arch >>
 
 workflows:
