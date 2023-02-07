@@ -15,6 +15,9 @@ def main():
         print("failed to laod and parse yaml file", e)
         return
 
+    run_type = sys.argv[1]
+    print("running in {} mode".format(run_type))
+
     for k, v in images.items():
         image = {
             "name": k
@@ -31,29 +34,57 @@ def main():
         else:
             print(v, "is an unsupported type")
 
-        build_image(image)
+        if run_type == "build":
+            build_image(image)
+        elif run_type == "combine":
+            combine_image(image)
+        else:
+            print("invalid run_type")
 
 
 def build_image(image):
-    changed = os_run(
-        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(image["path"]))
+    changed = any_changed(image["path"])
     if changed != 0:
-        print("no changes in", image["name"], image["path"])
         return
-    
-    arch = sys.argv[1]
-    sha = subprocess.run(["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    
-    if sha == "":
-        print("unable to detect sha")
+
+    commit_sha = sha()
+
+    e = os_run("ci-scripts docker/combine_and_push_image --docker.images.dockerRepo {} --docker.tags \"{}, _sha, latest\" --docker.combine.amend_tags \"{}-arm64,{}-amd64\"".format(
+        image["name"], image["path"], image["version"], commit_sha, commit_sha)
+    if e != 0:
         exit(1)
 
+    print()
+
+def build_image(image):
+    changed = any_changed(image["path"])
+    if changed != 0:
+        return
+    
+    arch = sys.argv[2]
+
     e = os_run("ci-scripts docker/build_and_push_image --docker.images.dockerRepo {} --docker.images.folder {} --docker.tags \"{}-{}\" --docker.image.platform \"linux/{}\"".format(
-        image["name"], image["path"], sha, arch, arch))
+        image["name"], image["path"], sha(), arch, arch))
     if e != 0:
         exit(1)
     print()
 
+def any_changed()
+    changed = os_run(
+        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(image["path"]))
+    if changed != 0:
+        print("no changes in", image["name"], image["path"])
+
+    return changed
+
+def sha()
+    sha = subprocess.run(["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+
+    if sha == "":
+        print("unable to detect sha")
+        exit(1)
+
+    return sha
 
 def os_run(cmd):
     print(cmd)
