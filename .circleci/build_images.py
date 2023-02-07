@@ -42,15 +42,16 @@ def main():
             print("invalid run_type")
 
 
-def build_image(image):
+def combine_image(image):
     changed = any_changed(image["path"])
-    if changed != 0:
+    if not changed:
+        print("no changes in", image["name"], image["path"])
         return
 
     commit_sha = sha()
 
     e = os_run("ci-scripts docker/combine_and_push_image --docker.images.dockerRepo {} --docker.tags \"{}, _sha, latest\" --docker.combine.amend_tags \"{}-arm64,{}-amd64\"".format(
-        image["name"], image["path"], image["version"], commit_sha, commit_sha)
+        image["name"], image["path"], image["version"], commit_sha, commit_sha))
     if e != 0:
         exit(1)
 
@@ -58,7 +59,8 @@ def build_image(image):
 
 def build_image(image):
     changed = any_changed(image["path"])
-    if changed != 0:
+    if not changed:
+        print("no changes in", image["name"], image["path"])
         return
     
     arch = sys.argv[2]
@@ -69,15 +71,13 @@ def build_image(image):
         exit(1)
     print()
 
-def any_changed()
+def any_changed(path):
     changed = os_run(
-        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(image["path"]))
-    if changed != 0:
-        print("no changes in", image["name"], image["path"])
+        "ci-scripts git/files_changed --git.files_changed.prefix {}".format(path))       
 
-    return changed
+    return changed == 0
 
-def sha()
+def sha():
     sha = subprocess.run(["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     if sha == "":
