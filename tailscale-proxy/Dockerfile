@@ -6,7 +6,7 @@ RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && tar xzf ${TSFILE} --stri
 COPY . ./
 
 
-FROM nginx:1.23-alpine
+FROM nginx:1.25-alpine
 RUN apk update && apk add ca-certificates iptables ip6tables && rm -rf /var/cache/apk/*
 COPY --from=hairyhenderson/gomplate:slim /gomplate /bin/gomplate
 
