@@ -115,12 +115,19 @@ async fn setup_account_for_config(
                 "database_port".to_string(),
                 db_connection_details.port.clone(),
             ),
-            ("username".to_string(), db_config.username),
-            ("password".to_string(), user_password),
+            ("username".to_string(), db_config.username.clone()),
+            ("password".to_string(), user_password.clone()),
         ]);
 
     for (i, db) in db_config.databases.iter().enumerate() {
         secret_data.insert(format!("database.{}", i), db.clone());
+        secret_data.insert(format!("database_url.{}", i), format!("host={} port={} user={} password='{}' dbname={} sslmode=disable", 
+            db_connection_details.host,
+            db_connection_details.port,
+            db_config.username,
+            user_password,
+            db,
+        ));
     }
     // create kubernetes secret
     let db_secret = Secret {
