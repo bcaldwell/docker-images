@@ -17,3 +17,7 @@ benjamincaldwell/hue-exporter:
 benjamincaldwell/kube-postgress-bootstrap:
   path: kube-postgress-bootstrap
   version: 0.0.1
+
+benjamincaldwell/miniflux-archiver:
+  path: miniflux-archiver
+  version: 1.0.0

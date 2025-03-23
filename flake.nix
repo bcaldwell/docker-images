@@ -18,6 +18,9 @@
             pkgs.cargo-edit
             # needed for linker to work with tokio
             pkgs.darwin.apple_sdk.frameworks.Security
+
+            pkgs.python313Packages.uv
+            pkgs.python313
           ];
           buildInputs = [ ];
           # Certain Rust tools won't work without this

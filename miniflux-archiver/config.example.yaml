@@ -1,0 +1,22 @@
+miniflux:
+  url: "https://miniflux.example.com"
+
+rules:
+  # Archive news items older than 30 days
+  - age_days: 30
+    categories: ["news", "tech"]
+    
+  # Archive specific feeds after 90 days
+  - age_days: 90
+    feeds: ["feed-id-1", "feed-id-2"]
+    
+  # Archive all items older than 180 days
+  - age_days: 180
+
+  # Archive short posts (less than 2 minute read)
+  - reading_time_min: 2
+    categories: ["news"]
+    
+logging:
+  level: "INFO"
+  # file: "archive_manager.log" 

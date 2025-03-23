@@ -1,0 +1,10 @@
+[project]
+name = "miniflux-archiver"
+version = "0.1.0"
+description = "A tool to automatically archive outdated feed items in Miniflux based on configurable rules"
+dependencies = [
+    "pyyaml==6.0.1",
+    "miniflux==0.0.14",
+    "python-dateutil==2.8.2",
+]
+requires-python = ">=3.8" 
