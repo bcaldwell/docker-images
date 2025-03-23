@@ -10,6 +10,7 @@ from miniflux import Client
 from dataclasses import dataclass, field
 from typing import Optional, List
 
+
 @dataclass
 class LoggingConfig:
     level: str = "INFO"

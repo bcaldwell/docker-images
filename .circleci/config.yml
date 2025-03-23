@@ -10,6 +10,8 @@ jobs:
     machine:
       image: ubuntu-2004:current
     resource_class: << parameters.resource_class >>
+    environment:
+      BUILDX_NO_DEFAULT_ATTESTATIONS: 1
     steps:
       - checkout
       - run: wget https://github.com/bcaldwell/ci-scripts/releases/download/latest/linux_<< parameters.arch >> -O ci-scripts
