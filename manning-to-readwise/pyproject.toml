@@ -1,0 +1,20 @@
+[project]
+name = "manning-to-readwise"
+version = "0.1.0"
+description = "Convert Manning notebook JSON exports to Readwise using their API"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.25.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"] 

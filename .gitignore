@@ -1,1 +1,2 @@
 kube-postgress-bootstrap/files/target
+miniflux-archiver/config.test.yaml
