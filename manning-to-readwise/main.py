@@ -25,7 +25,7 @@ def extract_highlights_and_notes(data: Dict[str, Any]) -> List[Dict[str, Any]]:
     # Get book metadata
     book_title = data.get('product', {}).get('title', 'Unknown Book')
     book_author = data.get('product', {}).get('authors', 'Unknown Author')
-    book_cover_url = data.get('product', {}).get('coverPath', '')  # Get book cover URL if available
+    book_cover_url = data.get('product', {}).get('coverPath', '')
     
     # Process each scrapbook item
     for item in data.get('scrapbookItems', []):
