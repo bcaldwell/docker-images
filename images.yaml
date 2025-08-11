@@ -21,3 +21,7 @@ benjamincaldwell/kube-postgress-bootstrap:
 benjamincaldwell/miniflux-archiver:
   path: miniflux-archiver
   version: 1.0.0
+
+benjamincaldwell/manning-to-readwise:
+  path: manning-to-readwise
+  version: 1.0.0
