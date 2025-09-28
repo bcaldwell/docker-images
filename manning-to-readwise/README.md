@@ -10,6 +10,7 @@ A Python tool to convert Manning notebook JSON exports to Readwise using their A
 - **Properly groups all highlights under one book** (solves the CSV import issue)
 - Support for batch processing with rate limiting
 - Real-time feedback on API responses
+- Option to merge sequential highlights with the same ID into consolidated items
 
 ## Installation
 
@@ -53,6 +54,9 @@ python src/manning_to_readwise.py -i notebook.json
 ```bash
 # Send highlights in smaller batches (useful for large notebooks)
 python src/manning_to_readwise.py -i notebook.json --batch-size 50
+
+# Merge sequential highlights with the same ID into one item
+python src/manning_to_readwise.py -i notebook.json --merge-sequential
 ```
 
 ## How It Works

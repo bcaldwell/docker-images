@@ -18,7 +18,7 @@ def parse_manning_json(json_file: Path) -> Dict[str, Any]:
         return json.load(f)
 
 
-def extract_highlights_and_notes(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+def extract_highlights_and_notes(data: Dict[str, Any], merge_sequential: bool = False) -> List[Dict[str, Any]]:
     """Extract highlights and notes from Manning data in Readwise API format."""
     items = []
     
@@ -41,10 +41,39 @@ def extract_highlights_and_notes(data: Dict[str, Any]) -> List[Dict[str, Any]]:
         
         # Process highlights
         highlights = []
-        for highlight in item.get('highlights', []):
-            highlight_text = highlight.get('text', '').strip()
-            if highlight_text:
-                highlights.append(highlight_text)
+        if merge_sequential:
+            # Merge sequential highlights with the same ID
+            current_id = None
+            current_texts = []
+            
+            for highlight in item.get('highlights', []):
+                highlight_text = highlight.get('text', '').strip()
+                highlight_id = highlight.get('id')
+                
+                if not highlight_text:
+                    continue
+                
+                if highlight_id != current_id:
+                    # Save previous group if it exists
+                    if current_texts:
+                        highlights.append('\n\n'.join(current_texts))
+                    
+                    # Start new group
+                    current_id = highlight_id
+                    current_texts = [highlight_text]
+                else:
+                    # Add to current group
+                    current_texts.append(highlight_text)
+            
+            # Add the last group
+            if current_texts:
+                highlights.append('\n\n'.join(current_texts))
+        else:
+            # Standard processing - collect all highlights
+            for highlight in item.get('highlights', []):
+                highlight_text = highlight.get('text', '').strip()
+                if highlight_text:
+                    highlights.append(highlight_text)
         
         # Process notes
         notes = []
@@ -158,6 +187,12 @@ def main():
         help='Number of highlights to send per API request (default: 100)'
     )
     
+    parser.add_argument(
+        '--merge-sequential',
+        action='store_true',
+        help='Merge sequential highlights with the same ID into one item'
+    )
+    
     args = parser.parse_args()
                 
     # Get token from environment variable
@@ -180,7 +215,7 @@ def main():
         
         # Extract highlights and notes
         print("Extracting highlights and notes...")
-        items = extract_highlights_and_notes(data)
+        items = extract_highlights_and_notes(data, args.merge_sequential)
         
         print(f"Found {len(items)} highlights and notes to send to Readwise")
         
