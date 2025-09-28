@@ -25,6 +25,7 @@ class ArchiveRule:
     reading_time_min: Optional[int] = None
     categories: Optional[List[str]] = None
     feeds: Optional[List[int]] = None
+    exclude_feeds: Optional[List[int]] = None
 
     def __post_init__(self):
         if self.age_days is None and self.reading_time_min is None:
@@ -77,6 +78,11 @@ class Archiver:
             feed_name = self.feed_names.get(entry.get('feed_id'), '').lower()
             if not any(feed.lower() in feed_name for feed in rule.feeds):
                 return False
+
+        if rule.exclude_feeds:
+            feed_name = self.feed_names.get(entry.get('feed_id'), '').lower()
+            if any(feed.lower() in feed_name for feed in rule.exclude_feeds):
+                return False
                 
         return True
     
@@ -113,7 +119,7 @@ class Archiver:
                         reason = f"reading_time={entry.get('reading_time', 0)}min < {rule.reading_time_min}min"
 
                     to_archive.append(entry['id'])
-                    self.logger.info(f"Will archive: {entry['title']} ({reason})")
+                    self.logger.info(f"Will archive: {entry['feed']['title']} - {entry['title']} ({reason})")
                     break
             if to_archive:
                 if not self.dry_run:
